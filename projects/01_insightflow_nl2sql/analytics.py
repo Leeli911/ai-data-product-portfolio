@@ -31,16 +31,55 @@ def calculate_change_rate(current_value, previous_value):
 
 
 def get_weekly_data(df, city, district):
-    """按最新日期和上一期日期取出目标城市、区域的两周数据。"""
+    """按最新 7 天和前 7 天聚合目标城市、区域数据。"""
     target_df = df[(df["city"] == city) & (df["district"] == district)].copy()
+    target_df["date"] = pd.to_datetime(target_df["date"])
     target_df = target_df.sort_values("date")
 
     if len(target_df) < 2:
         raise ValueError("目标城市和区域至少需要两周数据")
 
-    previous_data = target_df.iloc[-2]
-    current_data = target_df.iloc[-1]
+    if len(target_df) == 2:
+        return target_df.iloc[0], target_df.iloc[1]
+
+    latest_date = target_df["date"].max()
+    current_start = latest_date - pd.Timedelta(days=6)
+    previous_start = current_start - pd.Timedelta(days=7)
+    previous_end = current_start - pd.Timedelta(days=1)
+
+    previous_df = target_df[
+        (target_df["date"] >= previous_start) & (target_df["date"] <= previous_end)
+    ]
+    current_df = target_df[
+        (target_df["date"] >= current_start) & (target_df["date"] <= latest_date)
+    ]
+
+    if len(previous_df) == 0 or len(current_df) == 0:
+        raise ValueError("日粒度数据需要包含最近 14 天")
+
+    previous_data = aggregate_period_data(previous_df)
+    current_data = aggregate_period_data(current_df)
     return previous_data, current_data
+
+
+def aggregate_period_data(period_df):
+    """将一段日期内的数据聚合成周级指标。"""
+    orders = period_df["orders"].sum()
+    gmv = period_df["gmv"].sum()
+
+    if orders == 0:
+        aov = 0
+    else:
+        aov = round(gmv / orders, 1)
+
+    return {
+        "gmv": gmv,
+        "orders": orders,
+        "users": period_df["users"].sum(),
+        "aov": aov,
+        "peak_orders": period_df["peak_orders"].sum(),
+        "coupon_cost": period_df["coupon_cost"].sum(),
+    }
 
 
 def find_main_driver(change_rates):

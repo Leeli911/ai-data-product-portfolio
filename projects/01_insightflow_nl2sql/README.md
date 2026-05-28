@@ -39,6 +39,8 @@ InsightFlow 是一个面向 AI 数据产品方向的智能问数 demo。
 | 评测逻辑 | `evaluator.py` | 计算 parser 准确率 |
 | 页面展示 | `app.py` | 使用 Streamlit 展示完整流程 |
 | 模拟数据 | `mock_data.csv` | 本地生活或外卖业务数据 |
+| 扩展数据 | `mock_data_extended.csv` | 由生成器产出的日粒度大样本数据 |
+| 数据生成 | `data_generator.py` | 生成多城市、多区域、日粒度经营数据 |
 | 评测数据 | `benchmark_queries.csv` | 用于评估 parser 的业务问题集 |
 
 ## 数据字段
@@ -50,6 +52,19 @@ date, city, district, gmv, orders, users, aov, peak_orders, coupon_cost
 ```
 
 当前 mock 数据包含北京朝阳区和海淀区两期数据，可体现朝阳区 GMV 环比下滑、海淀区订单上涨等经营变化。
+
+如需生成更多 demo 数据：
+
+```bash
+cd projects/01_insightflow_nl2sql
+python data_generator.py
+```
+
+生成结果会写入：
+
+```text
+mock_data_extended.csv
+```
 
 ## TDD 测试覆盖
 
