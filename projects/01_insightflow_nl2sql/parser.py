@@ -3,9 +3,9 @@
 
 def detect_metric(query):
     """根据中文关键词识别用户关注的业务指标。"""
-    if "GMV" in query or "gmv" in query:
+    if "GMV" in query or "gmv" in query or "销售额" in query:
         return "gmv"
-    if "订单" in query:
+    if "订单" in query or "订单量" in query:
         return "orders"
     if "用户" in query or "用户数" in query:
         return "users"

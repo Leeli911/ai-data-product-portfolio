@@ -32,9 +32,9 @@ projects/    具体作品集项目
 
 ## 当前阶段
 
-当前优先完成 `projects/01_insightflow_nl2sql`。
+`projects/01_insightflow_nl2sql` 已完成第一版最小可运行 demo。
 
-该项目会模拟一个智能数据分析助手，让用户输入中文业务问题后，系统输出：
+该项目模拟一个智能数据分析助手，让用户输入中文业务问题后，系统输出：
 
 1. 结构化解析结果
 2. 自动生成的 SQL
@@ -52,9 +52,9 @@ projects/    具体作品集项目
 
 详细测试规范见 [docs/testing_guide.md](/Users/apple/Documents/Codex/2026-05-28/ai-github-github-1000-ai-github/docs/testing_guide.md)。
 
-## 未来运行方式
+## 运行方式
 
-第二阶段实现 InsightFlow demo 后，运行方式预计为：
+运行 InsightFlow demo：
 
 ```bash
 cd projects/01_insightflow_nl2sql
@@ -62,7 +62,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-单元测试预计为：
+运行单元测试：
 
 ```bash
 cd projects/01_insightflow_nl2sql

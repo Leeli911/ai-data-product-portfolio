@@ -1,0 +1,5 @@
+date,city,district,gmv,orders,users,aov,peak_orders,coupon_cost
+2026-05-12,Beijing,Chaoyang,700000,7000,5600,100.0,2100,70000
+2026-05-19,Beijing,Chaoyang,630000,6300,5460,100.0,1960,72100
+2026-05-12,Beijing,Haidian,616000,7700,6200,80.0,2310,62000
+2026-05-19,Beijing,Haidian,652050,8050,6500,81.0,2430,65000

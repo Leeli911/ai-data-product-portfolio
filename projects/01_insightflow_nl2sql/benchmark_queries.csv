@@ -1,0 +1,6 @@
+query,expected_metric,expected_district,expected_task
+为什么北京朝阳区本周 GMV 下滑？,gmv,Chaoyang,root_cause_analysis
+海淀区订单为什么上涨？,orders,Haidian,root_cause_analysis
+本周用户数变化如何？,users,unknown,trend_analysis
+哪个地区客单价下降最明显？,aov,unknown,root_cause_analysis
+优惠券成本上升是否影响 GMV？,gmv,unknown,root_cause_analysis
