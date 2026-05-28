@@ -1,82 +1,137 @@
-# InsightFlow 智能问数与自动诊断
+# InsightFlow
 
-## 项目定位
+AI-Powered Intelligent Analytics Copilot
 
-InsightFlow 是一个面向 AI 数据产品方向的智能问数 demo。
+InsightFlow 是一个智能问数与自动归因分析 demo，模拟 AI 数据产品中“用户用自然语言提问，系统完成意图解析、SQL 生成、数据分析和业务诊断”的完整 workflow。
 
-它模拟业务同学输入中文经营问题后，系统自动完成：
+## 项目背景
 
-1. 问题解析
-2. SQL 生成
-3. 数据分析
-4. 业务诊断
-5. 基础评测
-
-本项目不接真实大模型 API，先用规则和模板模拟 AI workflow，重点展示产品理解、分析流程和评测思维。
-
-## 目标场景
-
-典型用户问题：
+在本地生活、外卖、零售等业务场景中，运营和业务负责人经常会问：
 
 ```text
 为什么北京朝阳区本周 GMV 下滑？
 ```
 
-系统预期输出：
+传统流程通常需要分析师理解问题、确认指标口径、写 SQL、查数、做环比分析，再整理业务解释。InsightFlow 将这条链路拆成一个可运行的 AI 数据产品原型，用规则模拟 LLM 的语义理解和结构化生成，用 pandas 执行确定性计算。
 
-1. Parsed Intent：结构化解析结果
-2. Generated SQL：自动生成的 SQL
-3. Analysis Result：本周、上周和环比变化
-4. Business Diagnosis：业务诊断建议
+## 用户痛点
 
-## 已实现模块
+1. 业务问题表达自然，但数据系统需要结构化查询条件。
+2. 取数、写 SQL 和做归因分析依赖分析师，响应链路较长。
+3. 业务解释容易混合主观判断，缺少可复现的计算过程。
+4. AI 生成答案如果没有评测和边界控制，容易产生幻觉或过度解释。
 
-| 模块 | 文件 | 说明 |
+## AI Workflow
+
+```text
+用户输入中文问题
+        ↓
+Intent Parsing：解析指标、地区、任务和时间范围
+        ↓
+Generated SQL：生成取数 SQL
+        ↓
+Analysis：用 pandas 计算本周、上周和环比变化
+        ↓
+Diagnosis：输出可解释的业务诊断
+        ↓
+Evaluation：用 benchmark 评估 parser 准确率
+```
+
+这个 workflow 的核心原则是：AI 负责理解和组织，数据计算由确定性模块完成。
+
+## 核心能力
+
+| 能力 | 当前实现 | 展示价值 |
 |---|---|---|
-| 问题解析 | `parser.py` | 将中文问题解析为结构化 intent |
-| SQL 生成 | `sql_generator.py` | 根据 intent 生成 SQL 字符串 |
-| 数据分析 | `analytics.py` | 用 pandas 分析 mock 数据 |
-| 评测逻辑 | `evaluator.py` | 计算 parser 准确率 |
-| 页面展示 | `app.py` | 使用 Streamlit 展示完整流程 |
-| 模拟数据 | `mock_data.csv` | 本地生活或外卖业务数据 |
-| 扩展数据 | `mock_data_extended.csv` | 由生成器产出的日粒度大样本数据 |
-| 数据生成 | `data_generator.py` | 生成多城市、多区域、日粒度经营数据 |
-| 评测数据 | `benchmark_queries.csv` | 用于评估 parser 的业务问题集 |
+| 智能问数 | 解析中文业务问题 | 展示自然语言到结构化 intent 的转换 |
+| NL2SQL | 根据 intent 生成 SQL | 展示从业务问题到取数逻辑的映射 |
+| 自动归因 | 计算 GMV、订单、用户、客单价等变化 | 展示指标拆解和主因判断 |
+| Prompt Evaluation | 使用 benchmark 评估 parser 输出 | 展示评测闭环和迭代思维 |
+| TDD | 使用 pytest 覆盖核心模块 | 展示每轮迭代可验证 |
+| Mock Data | 支持小样本和扩展日粒度数据 | 展示可控业务场景构造能力 |
 
-## 数据字段
-
-`mock_data.csv` 使用本地生活业务数据结构：
+## 技术架构
 
 ```text
-date, city, district, gmv, orders, users, aov, peak_orders, coupon_cost
+app.py                 Streamlit 页面入口
+parser.py              中文 query 解析
+sql_generator.py       SQL 生成
+analytics.py           pandas 数据分析和诊断
+evaluator.py           parser benchmark 评测
+data_generator.py      生成扩展 mock 数据
+mock_data.csv          小型演示数据
+mock_data_extended.csv 日粒度扩展数据
+benchmark_queries.csv  评测问题集
+tests/                 pytest 单元测试
 ```
 
-当前 mock 数据包含北京朝阳区和海淀区两期数据，可体现朝阳区 GMV 环比下滑、海淀区订单上涨等经营变化。
+技术栈：
 
-如需生成更多 demo 数据：
+1. Python
+2. pandas
+3. Streamlit
+4. pytest
 
-```bash
-cd projects/01_insightflow_nl2sql
-python data_generator.py
-```
+## Demo 示例
 
-生成结果会写入：
+默认问题：
 
 ```text
-mock_data_extended.csv
+为什么北京朝阳区本周 GMV 下滑？
 ```
 
-## TDD 测试覆盖
+解析结果：
 
-当前已覆盖：
+```python
+{
+    "metric": "gmv",
+    "city": "Beijing",
+    "district": "Chaoyang",
+    "task": "root_cause_analysis",
+    "time_range": "this_week"
+}
+```
 
-1. `tests/test_parser.py`：中文问题解析。
-2. `tests/test_sql_generator.py`：SQL 字段、表名和筛选条件。
-3. `tests/test_analytics.py`：GMV、订单、环比变化和主因判断。
-4. `tests/test_evaluator.py`：parser benchmark 准确率。
-5. `tests/test_app_smoke.py`：主流程冒烟测试。
+生成 SQL：
 
-## 运行方式
+```sql
+SELECT date, district, SUM(gmv) AS gmv
+FROM local_life_metrics
+WHERE city = 'Beijing'
+  AND district = 'Chaoyang'
+GROUP BY date, district
+ORDER BY date;
+```
+
+诊断输出：
+
+```text
+业务诊断：朝阳区本周 GMV 环比下降 10.0%，主要原因是订单量下降。
+```
+
+## Demo 截图
+
+首页完整界面：
+
+![InsightFlow home](assets/screenshots/screenshot_01_home.png)
+
+Intent Parsing 输出：
+
+![InsightFlow parser](assets/screenshots/screenshot_02_parser.png)
+
+Generated SQL 输出：
+
+![InsightFlow SQL](assets/screenshots/screenshot_03_sql.png)
+
+Analysis & Diagnosis 输出：
+
+![InsightFlow diagnosis](assets/screenshots/screenshot_04_diagnosis.png)
+
+Benchmark / 测试结果：
+
+![InsightFlow benchmark](assets/screenshots/screenshot_05_benchmark.png)
+
+## 如何运行
 
 安装依赖：
 
@@ -85,24 +140,54 @@ cd projects/01_insightflow_nl2sql
 pip install -r requirements.txt
 ```
 
-运行 Streamlit demo：
+启动 demo：
 
 ```bash
 streamlit run app.py
 ```
 
-运行单元测试：
+运行测试：
 
 ```bash
-cd projects/01_insightflow_nl2sql
 pytest
 ```
 
-## 项目价值
+生成扩展 mock 数据：
 
-InsightFlow 将中文业务问题拆成语义解析、SQL 生成、数据计算和业务解释四个环节。
+```bash
+python data_generator.py
+```
 
-这个设计强调两点：
+## Prompt Evaluation
 
-1. AI 负责理解问题、生成结构化意图和组织解释，不直接替代确定性计算。
-2. 数据计算由 SQL 或 pandas 完成，并通过单元测试和评测指标保证每个环节可验证、可迭代。
+当前版本用规则模拟 prompt / parser 输出，并通过 `benchmark_queries.csv` 做基础评测。
+
+评测指标：
+
+1. Metric Accuracy：指标识别准确率
+2. District Accuracy：区域识别准确率
+3. Task Accuracy：任务类型识别准确率
+4. Overall Accuracy：整体解析准确率
+
+运行方式：
+
+```bash
+python evaluator.py
+```
+
+当前评测结果可以在 Streamlit 页面中的 `Parser Benchmark 结果` 展开查看。
+
+## 面试讲法
+
+这个项目可以从三个角度介绍：
+
+1. 产品角度：InsightFlow 解决的是业务人员自然语言问数和经营异动诊断的问题，核心价值是缩短从问题到分析结论的链路。
+2. Workflow 角度：项目把智能问数拆成 intent parsing、SQL generation、data analysis、business diagnosis 和 evaluation，避免把所有能力都交给模型黑盒完成。
+3. 评测角度：项目用 benchmark 和 pytest 验证 parser、SQL、分析和主流程，体现 AI 数据产品不仅要能生成答案，也要能评估答案质量。
+
+AI 能力边界：
+
+1. 当前 demo 不调用真实大模型，用规则模拟 LLM workflow。
+2. SQL 生成用于展示取数逻辑，不直接连接真实数据库。
+3. 业务诊断只基于 mock 数据中的指标变化，不做超出数据证据的因果推断。
+4. 后续接入真实 LLM 时，应保留 SQL 校验、答案校验和人工审核机制。
