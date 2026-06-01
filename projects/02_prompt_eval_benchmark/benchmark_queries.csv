@@ -1,0 +1,23 @@
+query,expected_metric,expected_district,expected_task
+为什么北京朝阳区本周 GMV 下滑？,gmv,Chaoyang,root_cause_analysis
+海淀区订单上涨的主要原因？,orders,Haidian,root_cause_analysis
+本周用户数变化如何？,users,unknown,trend_analysis
+哪个地区客单价下降最多？,aov,unknown,comparison_analysis
+优惠券成本上升是否影响 GMV？,coupon_cost,unknown,impact_analysis
+晚高峰订单减少是否导致 GMV 下滑？,peak_orders,unknown,impact_analysis
+朝阳区用户数为什么下降？,users,Chaoyang,root_cause_analysis
+海淀区本周 GMV 趋势如何？,gmv,Haidian,trend_analysis
+丰台区订单和朝阳区相比怎么样？,orders,Fengtai,comparison_analysis
+浦东新区客单价上涨了吗？,aov,Pudong,root_cause_analysis
+哪个地区 GMV 表现最好？,gmv,unknown,comparison_analysis
+本周高峰期订单变化如何？,peak_orders,unknown,trend_analysis
+优惠券成本增加的影响是什么？,coupon_cost,unknown,impact_analysis
+朝阳区和海淀区订单差距是多少？,orders,Chaoyang,comparison_analysis
+用户数下降是否影响订单？,users,unknown,impact_analysis
+客单价变化是否拉动 GMV？,aov,unknown,impact_analysis
+丰台区本周用户趋势如何？,users,Fengtai,trend_analysis
+浦东订单上涨的主要原因？,orders,Pudong,root_cause_analysis
+哪个地区优惠券成本最高？,coupon_cost,unknown,comparison_analysis
+北京整体 GMV 变化如何？,gmv,unknown,trend_analysis
+销售额下降的原因是什么？,gmv,unknown,root_cause_analysis
+朝阳晚高峰订单趋势如何？,peak_orders,Chaoyang,trend_analysis

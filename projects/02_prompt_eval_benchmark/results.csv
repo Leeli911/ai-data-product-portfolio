@@ -1,0 +1,4 @@
+prompt_version,metric_accuracy,district_accuracy,task_accuracy,overall_accuracy,hallucination_rate
+V1,0.591,0.273,0.545,0.182,0.773
+V2,0.727,0.955,0.773,0.636,0.0
+V3,1.0,1.0,1.0,1.0,0.0
