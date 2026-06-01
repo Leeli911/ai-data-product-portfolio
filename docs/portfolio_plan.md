@@ -15,32 +15,32 @@
 
 ## 项目列表
 
-| 编号 | 项目 | 主题 | 价值 |
-|---|---|---|---|
-| 01 | InsightFlow | 智能问数与自动诊断 | 展示 AI workflow、NL2SQL 和数据分析 |
-| 02 | Prompt Eval Benchmark | Prompt 调优评测 | 展示 Prompt 版本管理和评测体系 |
-| 03 | AI Data Product PRD | 产品方案设计 | 展示产品思维、风险边界和效果评估 |
+| 编号 | 项目 | 状态 | 主题 | 价值 |
+|---|---|---|---|---|
+| 01 | InsightFlow | Completed v1 | 智能问数与自动诊断 | 展示 AI workflow、NL2SQL 和数据分析 |
+| 02 | Prompt Eval Benchmark | Completed v1 | Prompt 调优评测 | 展示 Prompt 版本管理、Schema Grounding、Few-shot 和 hallucination control |
+| 03 | AI Data Product PRD | Planned | 产品方案设计 | 展示产品思维、风险边界和效果评估 |
 
 ## 当前阶段
 
-先完成 01 项目，保证能运行、能测试、能展示、能写进简历。
+Project 01 和 Project 02 已完成 v1。
 
-第一阶段只创建基础架构和文档：
+当前作品集已经覆盖：
 
-1. 根目录 README
-2. Codex 工作规则
-3. 项目规划文档
-4. TDD 测试指南
-5. 工作流技能说明
-6. 子角色审查说明
-7. Review Checklist
-8. 01 项目占位目录
+1. 智能问数 workflow
+2. NL2SQL 原型
+3. pandas 数据分析与诊断
+4. Prompt 版本设计
+5. Prompt benchmark
+6. hallucination rate 评估
 
 ## 后续迭代顺序
 
 ### 第二阶段：实现 InsightFlow 核心能力
 
-按 TDD 顺序实现：
+状态：Completed v1。
+
+已完成：
 
 1. `parser.py`：中文问题解析
 2. `sql_generator.py`：根据结构化 intent 生成 SQL
@@ -50,14 +50,19 @@
 
 ### 第三阶段：实现 Prompt Eval Benchmark
 
-重点展示：
+状态：Completed v1。
+
+已完成：
 
 1. Prompt V1、V2、V3 的设计差异
 2. benchmark queries 的构造方式
-3. 解析准确率、任务准确率和整体准确率
-4. 如何根据评测结果迭代 Prompt
+3. metric、district、task、overall accuracy
+4. hallucination rate
+5. 基于 results.csv 的结果分析报告
 
 ### 第四阶段：补齐 AI Product Case Study
+
+状态：Planned。
 
 重点展示：
 
