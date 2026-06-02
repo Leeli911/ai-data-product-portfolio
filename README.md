@@ -126,6 +126,12 @@ cd projects/03_ai_product_case_study
 
 Project 02 的评测结果只代表受控 benchmark 上的表现，不代表生产环境可以直接上线。下一步真实产品化需要继续扩展 adversarial query、多业务线、多时间范围、人工评审和线上反馈闭环。
 
+面试讲法和后续优化路线见：
+
+```text
+docs/interview_strategy.md
+```
+
 ## Repository Structure
 
 ```text
