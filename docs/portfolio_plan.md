@@ -19,11 +19,11 @@
 |---|---|---|---|---|
 | 01 | InsightFlow | Completed v1 | 智能问数与自动诊断 | 展示 AI workflow、NL2SQL 和数据分析 |
 | 02 | Prompt Eval Benchmark | Completed v1 | Prompt 调优评测 | 展示 Prompt 版本管理、Schema Grounding、Few-shot 和 hallucination control |
-| 03 | AI Data Product PRD | Planned | 产品方案设计 | 展示产品思维、风险边界和效果评估 |
+| 03 | AI Product Case Study | Completed v1 | 产品方案设计 | 展示 PRD、评测方案、灰度策略、风险边界和 guardrails |
 
 ## 当前阶段
 
-Project 01 和 Project 02 已完成 v1。
+Project 01、Project 02 和 Project 03 已完成 v1。
 
 当前作品集已经覆盖：
 
@@ -33,6 +33,8 @@ Project 01 和 Project 02 已完成 v1。
 4. Prompt 版本设计
 5. Prompt benchmark
 6. hallucination rate 评估
+7. AI 数据产品 PRD
+8. 上线门槛、灰度策略和风险防护机制
 
 ## 后续迭代顺序
 
@@ -62,14 +64,23 @@ Project 01 和 Project 02 已完成 v1。
 
 ### 第四阶段：补齐 AI Product Case Study
 
-状态：Planned。
+状态：Completed v1。
 
-重点展示：
+已完成：
 
 1. PRD 写作能力
 2. AI workflow 产品设计
 3. 能力边界和风险控制
 4. 评测方案和人工审核机制
+5. MVP、内测、灰度和全量 rollout 计划
+
+## 当前面试主线
+
+这个作品集模拟的是 AI 数据产品经理在智能分析产品中的完整落地链路：
+
+1. Project 01 展示智能问数 workflow 如何从自然语言问题进入 SQL、计算和诊断。
+2. Project 02 展示 prompt 调优如何通过 benchmark、schema grounding、few-shot 和 hallucination rate 评估。
+3. Project 03 展示产品经理如何定义用户边界、上线门槛、灰度策略、人工审核和风险防护。
 
 ## GitHub 展示目标
 

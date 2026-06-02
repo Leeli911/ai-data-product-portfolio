@@ -10,7 +10,7 @@
 |---|---|---|---|
 | 01 InsightFlow | Completed v1 | 智能问数与自动诊断 | AI workflow, NL2SQL, data analysis, TDD |
 | 02 Prompt Eval Benchmark | Completed v1 | Prompt 调优与评测 | Prompt Engineering, Schema Grounding, Few-shot, hallucination control |
-| 03 AI Product Case Study | Planned | 产品方案设计 | PRD, AI product thinking, evaluation plan |
+| 03 AI Product Case Study | Completed v1 | 产品方案设计 | PRD, AI product thinking, evaluation plan, guardrails |
 
 ## Featured Projects
 
@@ -72,6 +72,19 @@
 projects/02_prompt_eval_benchmark/results_summary.md
 ```
 
+### 03 AI Product Case Study
+
+[AI Product Case Study](projects/03_ai_product_case_study) 是一份面向中国互联网数据平台场景的 AI 数据产品方案。
+
+它承接 Project 01 和 Project 02，进一步说明一个智能问数能力如何从 demo 进入产品化落地：
+
+1. `prd.md`：定义用户、痛点、核心场景、AI workflow、MVP 范围和成功指标。
+2. `evaluation_plan.md`：定义离线评测、在线评测、人工评审、prompt 版本迭代和上线门槛。
+3. `rollout_plan.md`：定义 MVP、内测、灰度、全量和反馈闭环。
+4. `risk_and_guardrails.md`：定义 hallucination、SQL、指标口径、权限和结果误读风险的防护机制。
+
+这个项目重点展示 AI 数据产品经理如何定义能力边界：LLM 负责理解和组织，指标计算、SQL 校验、权限控制和口径治理必须由确定性系统完成。
+
 ## How To Run
 
 运行 Project 01：
@@ -92,6 +105,12 @@ python evaluator.py
 pytest
 ```
 
+阅读 Project 03：
+
+```bash
+cd projects/03_ai_product_case_study
+```
+
 ## Portfolio Value
 
 这个作品集关注 AI 数据产品从业务问题到系统评估的完整链路：
@@ -99,7 +118,13 @@ pytest
 1. 用 InsightFlow 展示智能问数 workflow 如何从中文问题走到 SQL、分析和诊断。
 2. 用 Prompt Eval Benchmark 展示 prompt 版本如何被评估，而不是凭感觉调优。
 3. 用 hallucination rate 说明 AI 数据产品不能只看 accuracy，还要关注 schema 外输出对 SQL、分析和业务决策的风险。
-4. 后续 Project 03 会补齐 AI 产品 PRD、能力边界、人工审核机制和 evaluation plan。
+4. 用 AI Product Case Study 补齐 PRD、上线门槛、灰度策略、人工审核机制和风险防护方案。
+
+## Interview Narrative
+
+这个作品集模拟的是 AI 数据产品经理在智能分析产品中的完整落地链路。Project 01 先做智能问数原型，把自然语言问题拆成 intent、SQL、数据计算和诊断；Project 02 进一步做 prompt evaluation，验证 schema grounding、few-shot 和 hallucination control 对稳定性的影响；Project 03 补齐产品方案能力，说明这个能力如何定义用户边界、上线门槛、灰度策略和风险防护。
+
+Project 02 的评测结果只代表受控 benchmark 上的表现，不代表生产环境可以直接上线。下一步真实产品化需要继续扩展 adversarial query、多业务线、多时间范围、人工评审和线上反馈闭环。
 
 ## Repository Structure
 
