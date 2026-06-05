@@ -91,6 +91,16 @@ pytest
 2. V2 如果 hallucination rate 明显下降，说明 schema grounding 对控制字段幻觉有效。
 3. V3 如果 overall accuracy 提升，说明 few-shot 对复杂 query 和同义词识别有帮助。
 
+## 扩展评测材料
+
+除了基础 benchmark，本项目还补充了上线前需要关注的风险样本和发布门槛：
+
+1. `adversarial_queries.csv`：记录权限绕过、敏感字段、危险 SQL、schema hallucination 和因果过度推断等对抗样本。
+2. `error_analysis.md`：分析 V1、V2、V3 的典型失败模式，以及为什么 schema 合法不等于语义正确。
+3. `release_gate.md`：定义 prompt 版本进入内测或灰度前需要满足的 accuracy、hallucination、SQL validity 和人工评审门槛。
+
+这些材料用于说明：prompt evaluation 不应该只停留在 accuracy 表格，而应该覆盖安全、权限、口径和上线决策。
+
 ## 项目价值
 
 我做这个 benchmark，是为了把 Prompt Engineering 从“凭感觉改 prompt”变成“可比较、可复现、可解释的实验”。

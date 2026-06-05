@@ -12,6 +12,17 @@
 | 02 Prompt Eval Benchmark | Completed v1 | Prompt 调优与评测 | Prompt Engineering, Schema Grounding, Few-shot, hallucination control |
 | 03 AI Product Case Study | Completed v1 | 产品方案设计 | PRD, AI product thinking, evaluation plan, guardrails |
 
+## Portfolio Flow
+
+```mermaid
+flowchart LR
+    P1["Project 01: InsightFlow<br/>智能问数 workflow"]
+    P2["Project 02: Prompt Eval Benchmark<br/>prompt 调优与评测"]
+    P3["Project 03: AI Product Case Study<br/>产品化方案与 guardrails"]
+
+    P1 --> P2 --> P3
+```
+
 ## Featured Projects
 
 ### 01 InsightFlow
@@ -130,6 +141,12 @@ Project 02 的评测结果只代表受控 benchmark 上的表现，不代表生�
 
 ```text
 docs/interview_strategy.md
+```
+
+面试演示导览见：
+
+```text
+docs/demo_walkthrough.md
 ```
 
 ## Repository Structure

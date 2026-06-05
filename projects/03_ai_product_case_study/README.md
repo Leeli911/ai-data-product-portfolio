@@ -34,6 +34,9 @@ prd.md                    产品需求文档
 evaluation_plan.md        评测方案和上线门槛
 rollout_plan.md           MVP、内测、灰度和全量计划
 risk_and_guardrails.md    风险边界和防护机制
+metrics_dictionary.md     指标字典和口径样例
+sample_review_cases.md    人工评审样例
+launch_checklist.md       上线检查清单
 ```
 
 ## 展示能力点
@@ -43,3 +46,4 @@ risk_and_guardrails.md    风险边界和防护机制
 3. 评测体系设计：同时关注 intent accuracy、SQL validity、hallucination rate、answer usefulness 和 latency。
 4. 风险边界设计：覆盖 SQL 误生成、指标口径错误、数据权限、结果误读和人工审核。
 5. 产品落地节奏：从 MVP 到内测、灰度、全量和多业务线扩展，形成可执行路线图。
+6. 评审材料设计：用指标字典、人工评审样例和上线 checklist 说明产品如何进入真实评审流程。
