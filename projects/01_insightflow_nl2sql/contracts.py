@@ -2,7 +2,10 @@
 
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
+
+
+CAUSAL_TERMS = ("导致", "证明", "必然因为", "根本原因是")
 
 
 class AnalyticsRequest(BaseModel):
@@ -132,3 +135,91 @@ class QueryExecutionResult(BaseModel):
     columns: list[str]
     rows: list[dict[str, JsonScalar]]
     row_count: int
+
+
+class Fact(BaseModel):
+    """由查询结果直接支持的业务事实。"""
+
+    fact_id: str
+    statement: str
+    metric: str
+    metric_label: str
+    unit: str
+    current_value: float
+    previous_value: float
+    change_rate: float
+    source_step_id: str
+
+
+class Interpretation(BaseModel):
+    """引用 Fact 的非因果分析解释。"""
+
+    statement: str
+    supporting_fact_ids: list[str]
+    reasoning_type: Literal["comparison", "decomposition", "correlation"]
+
+
+class Limitation(BaseModel):
+    """数据不足或当前方法不能判断的部分。"""
+
+    statement: str
+    impact: str
+    missing_data: list[str]
+
+
+class InsightRequest(BaseModel):
+    """Insight Agent 的类型化输入。"""
+
+    plan: AnalysisPlan
+    query_results: list[QueryExecutionResult]
+
+
+class InsightResult(BaseModel):
+    """严格分离事实、解释和限制的分析输出。"""
+
+    facts: list[Fact]
+    interpretations: list[Interpretation]
+    limitations: list[Limitation]
+
+    @model_validator(mode="after")
+    def validate_evidence_links(self):
+        """确保解释绑定有效事实并拒绝因果措辞。"""
+        fact_ids = {fact.fact_id for fact in self.facts}
+        if len(fact_ids) != len(self.facts):
+            raise ValueError("Fact ID 不能重复")
+
+        for interpretation in self.interpretations:
+            supporting_ids = set(interpretation.supporting_fact_ids)
+            if not supporting_ids:
+                raise ValueError("Interpretation 必须引用至少一个 Fact")
+            if not supporting_ids <= fact_ids:
+                raise ValueError("Interpretation 引用了不存在的 Fact")
+            if any(
+                term in interpretation.statement for term in CAUSAL_TERMS
+            ):
+                raise ValueError("Interpretation 不得使用因果措辞")
+        return self
+
+
+class ConfidenceFactor(BaseModel):
+    """置信度规则中的一个可展示加减分因素。"""
+
+    name: str
+    impact: float
+    reason: str
+
+
+class ConfidenceAssessment(BaseModel):
+    """证据完整度分数及全部评分依据。"""
+
+    score: float
+    factors: list[ConfidenceFactor]
+
+
+class ConfidenceRequest(BaseModel):
+    """Confidence Calculator 的类型化输入。"""
+
+    intent: IntentResult
+    plan_validation: PlanValidationResult
+    query_results: list[QueryExecutionResult]
+    insight: InsightResult
