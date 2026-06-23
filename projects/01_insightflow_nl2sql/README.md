@@ -1,188 +1,253 @@
-# InsightFlow
+# Text2Analytics: An Evidence-based Analytics System for Decision Support
 
-AI-Powered Intelligent Analytics Copilot
+Text2Analytics 是一个确定性、可复现的研究型作品集 MVP。它展示的重点不是“AI 能写出一条 SQL”，而是如何把一个业务问题转换为可检查的分析计划、安全查询、数据事实、谨慎解释、不确定性说明和证据完整度评分。
 
-InsightFlow 是一个智能问数与自动归因分析 demo，模拟 AI 数据产品中“用户用自然语言提问，系统完成意图解析、SQL 生成、数据分析和业务诊断”的完整 workflow。
-
-## 项目背景
-
-在本地生活、外卖、零售等业务场景中，运营和业务负责人经常会问：
+当前版本聚焦一个受控黄金问题：
 
 ```text
 为什么北京朝阳区本周 GMV 下滑？
 ```
 
-传统流程通常需要分析师理解问题、确认指标口径、写 SQL、查数、做环比分析，再整理业务解释。InsightFlow 将这条链路拆成一个可运行的 AI 数据产品原型，用规则模拟 LLM 的语义理解和结构化生成，用 pandas 执行确定性计算。
+项目不接入 LLM 或复杂 Agent 框架。第一阶段使用确定性模块验证产品链路、证据边界和评测方法，为后续研究与迭代建立可复现基线。
 
-## 用户痛点
+## Why Text2SQL Is Not Enough
 
-1. 业务问题表达自然，但数据系统需要结构化查询条件。
-2. 取数、写 SQL 和做归因分析依赖分析师，响应链路较长。
-3. 业务解释容易混合主观判断，缺少可复现的计算过程。
-4. AI 生成答案如果没有评测和边界控制，容易产生幻觉或过度解释。
+Text2SQL 只回答“如何取数”，但业务决策还需要回答更多问题：
 
-## AI Workflow
+1. 用户真正想做哪类分析？
+2. 一个结论需要经过哪些分析步骤？
+3. SQL 是否只使用已知表和字段，是否安全可执行？
+4. 查询结果中哪些内容是事实，哪些只是解释？
+5. 当前数据不能支持哪些判断？
+6. 结论的证据链是否完整？
+
+如果系统只生成 SQL，再直接输出自然语言结论，就容易隐藏错误路径、混淆事实与解释，并把相关性描述成因果关系。Text2Analytics 将这些环节拆开，使每一步都能被检查和测试。
+
+## Project Motivation
+
+传统业务分析通常由分析师完成问题澄清、指标确认、SQL 编写、数据验证、指标拆解和结论表达。自然语言分析系统可以缩短这条链路，但只有在以下条件成立时才适合辅助决策：
+
+- 分析路径可见，而不是直接跳到答案；
+- SQL 基于真实 Schema，并经过独立安全校验；
+- 结论能够追溯到查询结果；
+- 系统主动表达数据缺口和因果边界；
+- 质量可以通过结构化 Evaluation 复现。
+
+这个项目尝试把这些原则做成一个低成本、可运行的产品原型，而不是声称已经解决任意业务分析问题。
+
+## System Architecture
+
+```mermaid
+flowchart TD
+    A[Business Question] --> B[Intent Agent]
+    B --> C[Planner Agent]
+    C --> D[Plan Validator]
+    D --> E[SQL Agent]
+    E --> F[Independent SQL Validator]
+    F --> G[DuckDB Executor]
+    G --> H[Insight Agent]
+    H --> I[Confidence Calculator]
+    I --> J[AnalyticsResponse]
+    J --> K[Streamlit Presentation]
+```
+
+核心链路：
 
 ```text
-用户输入中文问题
-        ↓
-Intent Parsing：解析指标、地区、任务和时间范围
-        ↓
-Generated SQL：生成取数 SQL
-        ↓
-Analysis：用 pandas 计算本周、上周和环比变化
-        ↓
-Diagnosis：输出可解释的业务诊断
-        ↓
-Evaluation：用 benchmark 评估 parser 准确率
+AnalyticsRequest
+-> IntentResult
+-> AnalysisPlan
+-> PlanValidationResult
+-> GeneratedQuery
+-> SQLValidationResult
+-> QueryExecutionResult
+-> InsightResult
+-> ConfidenceAssessment
+-> AnalyticsResponse
 ```
 
-这个 workflow 的核心原则是：AI 负责理解和组织，数据计算由确定性模块完成。
+`pipeline.py` 只负责编排、保存阶段产物和失败中止。指标计算、SQL 安全、Insight 生成和 Confidence 规则分别保留在对应模块中。`app.py` 只消费 `AnalyticsResponse`，不重复实现分析逻辑。
 
-## 核心能力
+## Golden Use Case
 
-| 能力 | 当前实现 | 展示价值 |
-|---|---|---|
-| 智能问数 | 解析中文业务问题 | 展示自然语言到结构化 intent 的转换 |
-| NL2SQL | 根据 intent 生成 SQL | 展示从业务问题到取数逻辑的映射 |
-| 自动归因 | 计算 GMV、订单、用户、客单价等变化 | 展示指标拆解和主因判断 |
-| Prompt Evaluation | 使用 benchmark 评估 parser 输出 | 展示评测闭环和迭代思维 |
-| TDD | 使用 pytest 覆盖核心模块 | 展示每轮迭代可验证 |
-| Mock Data | 支持小样本和扩展日粒度数据 | 展示可控业务场景构造能力 |
+黄金问题使用数据最大日期向前 7 天作为本周，再向前连续 7 天作为上周。
 
-## 技术架构
+真实 DuckDB 查询结果：
 
-```text
-app.py                 Streamlit 页面入口
-parser.py              中文 query 解析
-sql_generator.py       SQL 生成
-analytics.py           pandas 数据分析和诊断
-evaluator.py           parser benchmark 评测
-data_generator.py      生成扩展 mock 数据
-mock_data.csv          小型演示数据
-mock_data_extended.csv 日粒度扩展数据
-benchmark_queries.csv  评测问题集
-tests/                 pytest 单元测试
+| 指标 | 本周 | 上周 | 环比 |
+|---|---:|---:|---:|
+| GMV | 680,309 | 751,318 | -9.5% |
+| 订单量 | 6,776 | 7,481 | -9.4% |
+| 活跃用户 | 6,174 | 6,133 | +0.7% |
+| 客单价 | 100.40 | 100.43 | 0.0% |
+| 高峰订单 | 2,096 | 2,316 | -9.5% |
+| 优惠券成本 | 68,027 | 75,128 | -9.5% |
+
+系统给出的谨慎解释是：
+
+> 订单量下降与 GMV 下滑方向一致，是当前数据中最显著的关联因素。
+
+这句话描述的是观测指标之间的关系，不是因果结论。
+
+## Type-safe Pipeline
+
+所有跨模块业务数据都使用 Pydantic Schema，包括：
+
+- `AnalyticsRequest`
+- `IntentResult`
+- `AnalysisPlan`
+- `GeneratedQuery` / `ValidatedQuery`
+- `QueryExecutionResult`
+- `Fact` / `Interpretation` / `Limitation`
+- `ConfidenceAssessment`
+- `PipelineError` / `AnalyticsResponse`
+- `EvaluationReport`
+
+类型化边界避免模块之间传递散乱字典，也让单元测试可以独立构造任意阶段的输入。失败响应统一包含 `failed_stage`、`error_code` 和 `message`；失败时不生成虚假 Confidence。
+
+## Schema Grounding and SQL Guardrails
+
+SQL Agent 只能使用 `schema_catalog.py` 暴露的三张表：
+
+- `fact_orders`
+- `dim_district`
+- `fact_marketing_cost`
+
+候选 SQL 不能直接执行，必须先经过独立 `sql_validator.py`。当前 Guardrails 会拒绝：
+
+- 未知表；
+- 未知字段；
+- `DELETE` 等非只读语句；
+- 多语句输入；
+- `SELECT *`；
+- 未通过 AST 和 Schema 白名单检查的查询。
+
+Executor 只接受 `ValidatedQuery`，然后在本地 DuckDB 中执行真实 CSV 查询。任一必需 SQL 校验失败时，所有查询都不会执行；任一必需查询失败或为空时，系统不会继续生成 Insight。
+
+## Fact / Interpretation / Limitation
+
+Insight 输出被明确分成三层：
+
+### Fact
+
+Fact 只描述查询结果直接支持的数值，并保留 `fact_id`、指标、单位、当前值、对比值、变化率和来源步骤。
+
+### Interpretation
+
+Interpretation 必须引用有效 `fact_id`，并标记 reasoning type：
+
+- `comparison`
+- `decomposition`
+- `correlation`
+
+Pydantic 契约会拒绝“导致”“证明”“必然因为”“根本原因是”等因果措辞。
+
+### Limitation
+
+当前输出明确说明：
+
+1. 当前数据只能支持相关性分析，不能证明因果关系。
+2. 缺少库存、天气、竞品、营销曝光等外部解释变量。
+3. 优惠券成本只能说明已观测投入变化，不能单独说明营销效果。
+
+## Confidence as Evidence Completeness
+
+Confidence 表示 evidence completeness，不表示结论为真的概率。
+
+黄金链路当前得分为 `0.90`。评分依据同时展示给用户：
+
+- Intent 是否完整；
+- Plan 是否覆盖三条必需路径；
+- SQL 是否全部校验并执行成功；
+- 当前期和对比期是否完整；
+- Interpretation 是否绑定 Fact；
+- 是否缺少支持数据；
+- 是否足以完成指标拆解；
+- 是否存在只能观察相关性的重要限制。
+
+页面不会只展示一个孤立分数，而会同时展示每个 factor 的 `name`、`impact` 和 `reason`。
+
+## Evaluation Framework
+
+当前评测是一次 **controlled deterministic evaluation**，包含 10 个案例：
+
+- 4 个黄金问题等价表达；
+- 2 个模糊问题；
+- 2 个超范围问题；
+- 2 个对抗问题。
+
+它主要验证：黄金链路、失败中止、SQL guardrails、evidence grounding 和 uncertainty display。
+
+| Dimension | Pass Rate |
+|---|---:|
+| intent_correctness | 100% |
+| plan_coverage | 100% |
+| sql_groundedness | 100% |
+| sql_executability | 100% |
+| insight_groundedness | 100% |
+| uncertainty_clarity | 100% |
+
+**100% 通过率不代表系统可以泛化到任意业务问题。** 当前案例围绕一个黄金场景和少量等价表达构造，作用是验证受控 MVP 的内部一致性，而不是衡量开放环境中的真实泛化能力。
+
+完整产物：
+
+- `evaluation_results.json`：每个案例、每个维度的 pass、score 和 details；
+- `evaluation_summary.md`：案例结果、维度通过率和失败原因摘要。
+
+未来扩展需要更多数据集、更宽的问题类型和更真实的用户评测。
+
+## Limitations
+
+1. 当前只覆盖北京朝阳区本周 GMV 下滑这一个黄金场景及少量等价表达。
+2. Intent、Plan、SQL 和 Insight 使用确定性规则，不代表开放问题理解能力。
+3. 数据为受控的本地模拟经营数据，不能代表真实生产数据分布。
+4. SQL Validator 尚未提供生产级权限、资源限制和查询成本控制。
+5. Evaluation 只有 10 个受控案例，尚未覆盖噪声输入、复杂追问和真实用户行为。
+6. 当前结论只能支持相关性分析和指标拆解，不能识别业务因果关系。
+7. Streamlit 页面是展示型原型，没有登录、多数据源、远程 API 或协作功能。
+
+## Research Relevance
+
+这是一个研究型作品集项目，而不是已经完成的论文。它提供了几个可以继续研究和讨论的方向：
+
+- **human-centered AI**：让用户看到系统如何理解问题、如何规划分析，以及在哪一步失败；
+- **explainable analytics**：把查询事实、分析解释和限制说明分开呈现；
+- **decision support**：用可追溯证据辅助判断，而不是替用户做未经验证的决策；
+- **human-AI collaboration**：将系统定位为可检查的分析协作者，而不是不可质疑的答案生成器；
+- **uncertainty communication**：主动表达相关性边界、缺失变量和证据完整度。
+
+后续工作可以基于更多业务问题、真实用户任务和人工评审，研究这种结构化证据呈现是否真正改善分析效率、理解程度和决策质量。
+
+## Reproducibility
+
+进入项目目录：
+
+```bash
+cd projects/01_insightflow_nl2sql
 ```
-
-技术栈：
-
-1. Python
-2. pandas
-3. Streamlit
-4. pytest
-
-## Demo 示例
-
-默认问题：
-
-```text
-为什么北京朝阳区本周 GMV 下滑？
-```
-
-解析结果：
-
-```python
-{
-    "metric": "gmv",
-    "city": "Beijing",
-    "district": "Chaoyang",
-    "task": "root_cause_analysis",
-    "time_range": "this_week"
-}
-```
-
-生成 SQL：
-
-```sql
-SELECT date, district, SUM(gmv) AS gmv
-FROM local_life_metrics
-WHERE city = 'Beijing'
-  AND district = 'Chaoyang'
-GROUP BY date, district
-ORDER BY date;
-```
-
-诊断输出：
-
-```text
-业务诊断：朝阳区本周 GMV 环比下降 10.0%，主要原因是订单量下降。
-```
-
-## Demo 截图
-
-首页完整界面：
-
-![InsightFlow home](assets/screenshots/screenshot_01_home.png)
-
-Intent Parsing 输出：
-
-![InsightFlow parser](assets/screenshots/screenshot_02_parser.png)
-
-Generated SQL 输出：
-
-![InsightFlow SQL](assets/screenshots/screenshot_03_sql.png)
-
-Analysis & Diagnosis 输出：
-
-![InsightFlow diagnosis](assets/screenshots/screenshot_04_diagnosis.png)
-
-Benchmark / 测试结果：
-
-![InsightFlow benchmark](assets/screenshots/screenshot_05_benchmark.png)
-
-## 如何运行
 
 安装依赖：
 
 ```bash
-cd projects/01_insightflow_nl2sql
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-启动 demo：
+启动 Streamlit：
 
 ```bash
 streamlit run app.py
 ```
 
-运行测试：
+运行项目全量测试：
 
 ```bash
-pytest
+pytest -q
 ```
 
-生成扩展 mock 数据：
+重新生成 Evaluation 报告：
 
 ```bash
-python data_generator.py
+python evaluation.py
 ```
 
-## Prompt Evaluation
-
-当前版本用规则模拟 prompt / parser 输出，并通过 `benchmark_queries.csv` 做基础评测。
-
-评测指标：
-
-1. Metric Accuracy：指标识别准确率
-2. District Accuracy：区域识别准确率
-3. Task Accuracy：任务类型识别准确率
-4. Overall Accuracy：整体解析准确率
-
-运行方式：
-
-```bash
-python evaluator.py
-```
-
-当前评测结果可以在 Streamlit 页面中的 `Parser Benchmark 结果` 展开查看。
-
-## 设计复盘
-
-我做 InsightFlow 时，优先想清楚的不是页面长什么样，而是一个智能问数产品应该怎么把“业务问题”稳定地转成“可验证的数据分析过程”。
-
-在这个 demo 里，我把链路拆成了几个相对独立的步骤：先理解用户问的指标和区域，再生成 SQL，再用 pandas 做确定性计算，最后把计算结果组织成业务诊断。这样设计的原因是，智能分析产品不能只追求回答流畅，还需要让每一步都能被检查、被复现、被评估。
-
-当前版本没有直接接入真实大模型，而是先用规则模拟 LLM workflow。这样做可以先把产品链路、数据口径和评测方式跑通，后续再替换成真实模型时，也能继续保留 SQL 校验、输出格式校验和人工审核机制。
-
-这个项目最想表达的是：AI 数据产品的价值不只是“能回答”，而是能把业务问题拆成清晰 workflow，并用数据和评测证明这个 workflow 是可靠的。
+当前核心技术栈：Python、Pydantic 2、DuckDB、sqlglot、pandas、Streamlit 和 pytest。
