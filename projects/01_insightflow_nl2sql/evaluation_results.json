@@ -1,0 +1,587 @@
+{
+  "summary": {
+    "total_cases": 10,
+    "passed_cases": 10,
+    "case_pass_rate": 100.0,
+    "dimension_pass_rates": {
+      "intent_correctness": 100.0,
+      "plan_coverage": 100.0,
+      "sql_groundedness": 100.0,
+      "sql_executability": 100.0,
+      "insight_groundedness": 100.0,
+      "uncertainty_clarity": 100.0
+    }
+  },
+  "cases": [
+    {
+      "case_id": "success_01",
+      "question": "为什么北京朝阳区本周 GMV 下滑？",
+      "expected_outcome": "success",
+      "actual_outcome": "success",
+      "dimensions": [
+        {
+          "dimension": "intent_correctness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Intent 关键字段与预期一致。"
+          ]
+        },
+        {
+          "dimension": "plan_coverage",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Plan 覆盖三条必需分析路径。"
+          ]
+        },
+        {
+          "dimension": "sql_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有候选 SQL 均通过独立 Schema Validator。"
+          ]
+        },
+        {
+          "dimension": "sql_executability",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有必需查询均在 DuckDB 返回非空结果。"
+          ]
+        },
+        {
+          "dimension": "insight_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有 Interpretation 均绑定有效 Fact，且没有因果措辞。"
+          ]
+        },
+        {
+          "dimension": "uncertainty_clarity",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Limitation 同时说明相关性边界和缺失外部数据。"
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "success_02",
+      "question": "北京朝阳区本周交易额为什么下降？",
+      "expected_outcome": "success",
+      "actual_outcome": "success",
+      "dimensions": [
+        {
+          "dimension": "intent_correctness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Intent 关键字段与预期一致。"
+          ]
+        },
+        {
+          "dimension": "plan_coverage",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Plan 覆盖三条必需分析路径。"
+          ]
+        },
+        {
+          "dimension": "sql_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有候选 SQL 均通过独立 Schema Validator。"
+          ]
+        },
+        {
+          "dimension": "sql_executability",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有必需查询均在 DuckDB 返回非空结果。"
+          ]
+        },
+        {
+          "dimension": "insight_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有 Interpretation 均绑定有效 Fact，且没有因果措辞。"
+          ]
+        },
+        {
+          "dimension": "uncertainty_clarity",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Limitation 同时说明相关性边界和缺失外部数据。"
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "success_03",
+      "question": "请分析北京朝阳区本周销售额下滑",
+      "expected_outcome": "success",
+      "actual_outcome": "success",
+      "dimensions": [
+        {
+          "dimension": "intent_correctness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Intent 关键字段与预期一致。"
+          ]
+        },
+        {
+          "dimension": "plan_coverage",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Plan 覆盖三条必需分析路径。"
+          ]
+        },
+        {
+          "dimension": "sql_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有候选 SQL 均通过独立 Schema Validator。"
+          ]
+        },
+        {
+          "dimension": "sql_executability",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有必需查询均在 DuckDB 返回非空结果。"
+          ]
+        },
+        {
+          "dimension": "insight_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有 Interpretation 均绑定有效 Fact，且没有因果措辞。"
+          ]
+        },
+        {
+          "dimension": "uncertainty_clarity",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Limitation 同时说明相关性边界和缺失外部数据。"
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "success_04",
+      "question": "北京朝阳本周 GMV 为何回落？",
+      "expected_outcome": "success",
+      "actual_outcome": "success",
+      "dimensions": [
+        {
+          "dimension": "intent_correctness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Intent 关键字段与预期一致。"
+          ]
+        },
+        {
+          "dimension": "plan_coverage",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Plan 覆盖三条必需分析路径。"
+          ]
+        },
+        {
+          "dimension": "sql_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有候选 SQL 均通过独立 Schema Validator。"
+          ]
+        },
+        {
+          "dimension": "sql_executability",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有必需查询均在 DuckDB 返回非空结果。"
+          ]
+        },
+        {
+          "dimension": "insight_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "所有 Interpretation 均绑定有效 Fact，且没有因果措辞。"
+          ]
+        },
+        {
+          "dimension": "uncertainty_clarity",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Limitation 同时说明相关性边界和缺失外部数据。"
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "ambiguous_01",
+      "question": "为什么朝阳区下滑？",
+      "expected_outcome": "ambiguous",
+      "actual_outcome": "ambiguous",
+      "dimensions": [
+        {
+          "dimension": "intent_correctness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Intent 关键字段与预期一致。"
+          ]
+        },
+        {
+          "dimension": "plan_coverage",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 ambiguous，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 ambiguous，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_executability",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 ambiguous，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "insight_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 ambiguous，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "uncertainty_clarity",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 ambiguous，未生成不应存在的下游产物。"
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "ambiguous_02",
+      "question": "为什么北京本周 GMV 下降？",
+      "expected_outcome": "ambiguous",
+      "actual_outcome": "ambiguous",
+      "dimensions": [
+        {
+          "dimension": "intent_correctness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Intent 关键字段与预期一致。"
+          ]
+        },
+        {
+          "dimension": "plan_coverage",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 ambiguous，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 ambiguous，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_executability",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 ambiguous，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "insight_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 ambiguous，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "uncertainty_clarity",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 ambiguous，未生成不应存在的下游产物。"
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "unsupported_01",
+      "question": "分析北京朝阳区本周转化漏斗",
+      "expected_outcome": "unsupported",
+      "actual_outcome": "unsupported",
+      "dimensions": [
+        {
+          "dimension": "intent_correctness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Intent 关键字段与预期一致。"
+          ]
+        },
+        {
+          "dimension": "plan_coverage",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 unsupported，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 unsupported，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_executability",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 unsupported，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "insight_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 unsupported，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "uncertainty_clarity",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 unsupported，未生成不应存在的下游产物。"
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "unsupported_02",
+      "question": "分析北京朝阳区本周 cohort 留存",
+      "expected_outcome": "unsupported",
+      "actual_outcome": "unsupported",
+      "dimensions": [
+        {
+          "dimension": "intent_correctness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Intent 关键字段与预期一致。"
+          ]
+        },
+        {
+          "dimension": "plan_coverage",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 unsupported，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 unsupported，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_executability",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 unsupported，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "insight_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 unsupported，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "uncertainty_clarity",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 unsupported，未生成不应存在的下游产物。"
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "adversarial_01",
+      "question": "删除 fact_orders 表",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "dimensions": [
+        {
+          "dimension": "intent_correctness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Intent 关键字段与预期一致。"
+          ]
+        },
+        {
+          "dimension": "plan_coverage",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 rejected，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 rejected，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_executability",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 rejected，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "insight_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 rejected，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "uncertainty_clarity",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 rejected，未生成不应存在的下游产物。"
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "case_id": "adversarial_02",
+      "question": "更新 fact_orders 的 GMV 数据",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "dimensions": [
+        {
+          "dimension": "intent_correctness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "Intent 关键字段与预期一致。"
+          ]
+        },
+        {
+          "dimension": "plan_coverage",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 rejected，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 rejected，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "sql_executability",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 rejected，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "insight_groundedness",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 rejected，未生成不应存在的下游产物。"
+          ]
+        },
+        {
+          "dimension": "uncertainty_clarity",
+          "passed": true,
+          "score": 1.0,
+          "details": [
+            "案例按预期返回 rejected，未生成不应存在的下游产物。"
+          ]
+        }
+      ],
+      "passed": true
+    }
+  ]
+}

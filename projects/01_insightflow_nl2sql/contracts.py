@@ -248,3 +248,58 @@ class AnalyticsResponse(BaseModel):
     confidence: ConfidenceAssessment | None = None
     completed_stages: list[str] = Field(default_factory=list)
     error: PipelineError | None = None
+
+
+class EvaluationCase(BaseModel):
+    """一个带预期结果的确定性评测案例。"""
+
+    case_id: str
+    category: Literal["success", "ambiguous", "unsupported", "adversarial"]
+    question: str
+    expected_outcome: Literal["success", "ambiguous", "unsupported", "rejected"]
+    expected_intent_type: Literal["drop_reason_analysis", "unsupported"]
+    expected_metric: str | None = None
+    expected_district: str | None = None
+    expected_time_range: str | None = None
+
+
+class EvaluationRequest(BaseModel):
+    """Evaluation Runner 的类型化输入。"""
+
+    cases: list[EvaluationCase]
+
+
+class EvaluationDimensionResult(BaseModel):
+    """单个评测维度的结果和可审查理由。"""
+
+    dimension: str
+    passed: bool
+    score: float
+    details: list[str]
+
+
+class EvaluationCaseResult(BaseModel):
+    """一个案例的预期、实际结果和六维评测。"""
+
+    case_id: str
+    question: str
+    expected_outcome: str
+    actual_outcome: str
+    dimensions: list[EvaluationDimensionResult]
+    passed: bool
+
+
+class EvaluationSummary(BaseModel):
+    """案例级和维度级聚合结果。"""
+
+    total_cases: int
+    passed_cases: int
+    case_pass_rate: float
+    dimension_pass_rates: dict[str, float]
+
+
+class EvaluationReport(BaseModel):
+    """可序列化的完整 Evaluation 报告。"""
+
+    summary: EvaluationSummary
+    cases: list[EvaluationCaseResult]

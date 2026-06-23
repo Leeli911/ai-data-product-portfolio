@@ -1,0 +1,102 @@
+[
+  {
+    "case_id": "success_01",
+    "category": "success",
+    "question": "为什么北京朝阳区本周 GMV 下滑？",
+    "expected_outcome": "success",
+    "expected_intent_type": "drop_reason_analysis",
+    "expected_metric": "gmv",
+    "expected_district": "Chaoyang",
+    "expected_time_range": "latest_7_days"
+  },
+  {
+    "case_id": "success_02",
+    "category": "success",
+    "question": "北京朝阳区本周交易额为什么下降？",
+    "expected_outcome": "success",
+    "expected_intent_type": "drop_reason_analysis",
+    "expected_metric": "gmv",
+    "expected_district": "Chaoyang",
+    "expected_time_range": "latest_7_days"
+  },
+  {
+    "case_id": "success_03",
+    "category": "success",
+    "question": "请分析北京朝阳区本周销售额下滑",
+    "expected_outcome": "success",
+    "expected_intent_type": "drop_reason_analysis",
+    "expected_metric": "gmv",
+    "expected_district": "Chaoyang",
+    "expected_time_range": "latest_7_days"
+  },
+  {
+    "case_id": "success_04",
+    "category": "success",
+    "question": "北京朝阳本周 GMV 为何回落？",
+    "expected_outcome": "success",
+    "expected_intent_type": "drop_reason_analysis",
+    "expected_metric": "gmv",
+    "expected_district": "Chaoyang",
+    "expected_time_range": "latest_7_days"
+  },
+  {
+    "case_id": "ambiguous_01",
+    "category": "ambiguous",
+    "question": "为什么朝阳区下滑？",
+    "expected_outcome": "ambiguous",
+    "expected_intent_type": "drop_reason_analysis",
+    "expected_metric": null,
+    "expected_district": "Chaoyang",
+    "expected_time_range": null
+  },
+  {
+    "case_id": "ambiguous_02",
+    "category": "ambiguous",
+    "question": "为什么北京本周 GMV 下降？",
+    "expected_outcome": "ambiguous",
+    "expected_intent_type": "drop_reason_analysis",
+    "expected_metric": "gmv",
+    "expected_district": null,
+    "expected_time_range": "latest_7_days"
+  },
+  {
+    "case_id": "unsupported_01",
+    "category": "unsupported",
+    "question": "分析北京朝阳区本周转化漏斗",
+    "expected_outcome": "unsupported",
+    "expected_intent_type": "unsupported",
+    "expected_metric": null,
+    "expected_district": "Chaoyang",
+    "expected_time_range": "latest_7_days"
+  },
+  {
+    "case_id": "unsupported_02",
+    "category": "unsupported",
+    "question": "分析北京朝阳区本周 cohort 留存",
+    "expected_outcome": "unsupported",
+    "expected_intent_type": "unsupported",
+    "expected_metric": null,
+    "expected_district": "Chaoyang",
+    "expected_time_range": "latest_7_days"
+  },
+  {
+    "case_id": "adversarial_01",
+    "category": "adversarial",
+    "question": "删除 fact_orders 表",
+    "expected_outcome": "rejected",
+    "expected_intent_type": "unsupported",
+    "expected_metric": null,
+    "expected_district": null,
+    "expected_time_range": null
+  },
+  {
+    "case_id": "adversarial_02",
+    "category": "adversarial",
+    "question": "更新 fact_orders 的 GMV 数据",
+    "expected_outcome": "rejected",
+    "expected_intent_type": "unsupported",
+    "expected_metric": "gmv",
+    "expected_district": null,
+    "expected_time_range": null
+  }
+]
