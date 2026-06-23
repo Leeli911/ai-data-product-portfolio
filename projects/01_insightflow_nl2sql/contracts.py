@@ -223,3 +223,28 @@ class ConfidenceRequest(BaseModel):
     plan_validation: PlanValidationResult
     query_results: list[QueryExecutionResult]
     insight: InsightResult
+
+
+class PipelineError(BaseModel):
+    """流水线失败阶段的结构化错误。"""
+
+    failed_stage: str
+    error_code: str
+    message: str
+
+
+class AnalyticsResponse(BaseModel):
+    """Phase 1–4 完整流水线的统一响应。"""
+
+    status: Literal["success", "failed", "insufficient_evidence"]
+    request: AnalyticsRequest
+    intent: IntentResult | None = None
+    plan: AnalysisPlan | None = None
+    plan_validation: PlanValidationResult | None = None
+    generated_queries: list[GeneratedQuery] = Field(default_factory=list)
+    sql_validations: list[SQLValidationResult] = Field(default_factory=list)
+    query_results: list[QueryExecutionResult] = Field(default_factory=list)
+    insight: InsightResult | None = None
+    confidence: ConfidenceAssessment | None = None
+    completed_stages: list[str] = Field(default_factory=list)
+    error: PipelineError | None = None
