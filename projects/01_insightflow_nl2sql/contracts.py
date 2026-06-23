@@ -47,3 +47,88 @@ class PlanValidationResult(BaseModel):
     is_valid: bool
     missing_step_ids: list[str] = Field(default_factory=list)
     errors: list[str] = Field(default_factory=list)
+
+
+class ColumnSchema(BaseModel):
+    """Schema Catalog 中一个可供 SQL 使用的字段。"""
+
+    name: str
+    semantic_type: str
+
+
+class TableSchema(BaseModel):
+    """一张表的最小字段快照。"""
+
+    name: str
+    columns: list[ColumnSchema]
+
+
+class SchemaSnapshot(BaseModel):
+    """SQL Agent 与 Validator 共用的已知 Schema。"""
+
+    tables: list[TableSchema]
+
+    @property
+    def table_names(self) -> set[str]:
+        """返回所有允许访问的物理表名。"""
+        return {table.name for table in self.tables}
+
+    @property
+    def column_names(self) -> set[str]:
+        """返回所有已知物理字段名。"""
+        return {
+            column.name
+            for table in self.tables
+            for column in table.columns
+        }
+
+
+class SQLGenerationRequest(BaseModel):
+    """SQL Agent 的类型化输入。"""
+
+    plan: AnalysisPlan
+    schema_snapshot: SchemaSnapshot
+
+
+class GeneratedQuery(BaseModel):
+    """尚未通过独立安全校验的候选 SQL。"""
+
+    step_id: str
+    purpose: str
+    sql: str
+
+
+class SQLGenerationResult(BaseModel):
+    """SQL Agent 为计划生成的候选查询集合。"""
+
+    queries: list[GeneratedQuery]
+
+
+class ValidatedQuery(BaseModel):
+    """SQL Validator 校验通过后才可执行的查询。"""
+
+    step_id: str
+    purpose: str
+    sql: str
+    referenced_tables: list[str]
+    referenced_columns: list[str]
+
+
+class SQLValidationResult(BaseModel):
+    """独立 SQL 安全校验的结构化结果。"""
+
+    is_valid: bool
+    validated_query: ValidatedQuery | None = None
+    errors: list[str] = Field(default_factory=list)
+
+
+JsonScalar = str | int | float | bool | None
+
+
+class QueryExecutionResult(BaseModel):
+    """DuckDB 查询返回的列、行和行数。"""
+
+    step_id: str
+    columns: list[str]
+    rows: list[dict[str, JsonScalar]]
+    row_count: int
